@@ -1,0 +1,47 @@
+{
+    "cluster_name": "prod-data-emr-cluster",
+    "release_label": "emr-6.10.0",
+    "subnet_id": "subnet-xxxxxxxxxxxxxxxxx",
+    "key_pair_name": "my-emr-ssh-key",
+    "log_uri": "s3://my-emr-logs-bucket/emr-logs/",
+    "service_role": "EMR_DefaultRole",
+    "instance_profile": "EMR_EC2_DefaultRole",
+    "create_edge_node": true,
+    
+    "master_instance_type": "m5.xlarge",
+    "slave_instance_type": "m5.large",
+    "instance_count": 3,
+    
+    "applications": [
+        {"Name": "Spark"},
+        {"Name": "Hadoop"},
+        {"Name": "JupyterHub"}
+    ],
+    
+    "configurations": [
+        {
+            "Classification": "jupyter-s3-conf",
+            "Properties": {
+                "s3.persistence.enabled": "true",
+                "s3.persistence.bucket": "my-emr-logs-bucket" 
+            }
+        },
+        {
+            "Classification": "spark-defaults",
+            "Properties": {
+                "spark.executor.memory": "4g"
+            }
+        }
+    ],
+    
+    "edge_node": {
+        "instance_type": "m5.xlarge",
+        "volume_size": 100,
+        "iam_profile": "EMR_EC2_DefaultRole",
+        "team_users": [
+            "alice",
+            "bob",
+            "charlie"
+        ]
+    }
+}
